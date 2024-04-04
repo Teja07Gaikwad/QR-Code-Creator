@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Qr code</title>
+    <link rel="stylesheet" href="QRcreator.css">
+</head>
+<body>
+    <div class="container">
+        <div class="box">
+            <section id="upper">
+                <h1>QR code Genrator</h1>
+                <p>paste text to create OR code</p>
+            </section>
+            <form id="qrform" >
+                <input type="text" name="qrText" id="qrInputText" placeholder="Enter text">
+                <button type="submit">Genrate QR Code</button>
+            </form>
+            <section id="qrContainer" class="qr_container">
+                <img id="qrImage" src="/Image/qr.webp" alt="QR code">
+            </section>
+        </div>
+    </div>
+    <script>
+        var qrformEl=document.getElementById("qrform");
+        var qrContainerEl=document.getElementById("qrContainer");
+        var qrImageEl=document.getElementById("qrImage");
+        var qrInputTextEl=document.getElementById("qrInputText");
+
+        var renderQRCode=(url)=>{
+            if(!url) return;
+            qrImageEl.src=url;
+            qrContainerEl.classList.add("show");
+
+        };
+
+        qrformEl.addEventListener("submit",(event)=>{
+            event.preventDefault();
+
+            var formData=new FormData(qrformEl);
+            var text= formData.get("qrText");
+
+            var qrcodeUrl= `https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${text}`;
+
+            renderQRCode(qrcodeUrl)
+        });
+        qrInputTextEl.addEventListener("keyup",()=>{
+            if(!qrInputTextEl.value.trim()){
+                qrContainerEl.classList.remove("show");
+            }
+
+           
+        });
+    </script>
+</body>
+</html>
